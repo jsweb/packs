@@ -1,6 +1,6 @@
 {
     "name": "snipacks",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "A dead simple, fast and objective CLI package manager for anything without dependencies",
     "main": "index.js",
     "repository": "git@gitlab.com:tecno.site/snipacks.git",
@@ -19,7 +19,7 @@
         "snipacks": "index.js"
     },
     "snipacks": {
-		"unpkg": {
+        "unpkg": {
             "worktopus.js": "worktopus",
             "moment.js": "moment/min/moment-with-locales.min.js",
             "jquery.js": "jquery/dist/jquery.min.js"
@@ -29,9 +29,9 @@
             "dstrbg.styl": "1662645",
             "tplrender.js": "1663326"
         },
-		"gist": {
+        "gist": {
             "kav.js": "steven89/f7aedca683deee6ee8211399e94cd583",
             "asq.js": "jyamashiro24/17ac171a73246744b09a47d6c9d77241"
         }
-	}
+    }
 }
