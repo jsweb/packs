@@ -69,6 +69,8 @@ Create a `snipacks` section like this:
 
 Then, just run `snipacks` CLI command!
 
+Key-value pairs within sections represent file-source, so key is the filename where asset will be saved and value is the source to fetch.
+
 ## Result
 
 **Snipacks** saves downloaded files into a diretory structure corresponding to `snipacks` section at `package.json`:
@@ -112,3 +114,33 @@ Gist needs `user/hash` to identify and get the code. Gitlab Snippets just need a
 ### Web / Anything
 
 **Snipacks** can fetch any public file online. Just map it into `web` section.
+
+## CLI commands
+
+**Snipacks** CLI support some simple commands. If none was given, `update` is default.
+
+### update
+
+Update/fetch all of your assets with this simple command: `snipacks update` or simply `snipacks`.
+
+### add
+
+You can add new assets to your project manually editing `snipacks` section at `package.json` and runing `update` command.
+
+But `snipacks add` command is a better method:
+
+```
+snipacks add unpkg moment.js moment/min/moment-with-locales.min.js
+
+snipacks add gist kav.js steven89/f7aedca683deee6ee8211399e94cd583
+
+snipacks add gitlab dom.js 34295
+
+snipacks add web animate.css https://raw.githubusercontent.com/daneden/animate.css/master/animate.min.css
+```
+
+Arguments must follow this pattern: `snipacks add [type] [file] [source]`.
+
+- **type** represents the Internet end point where asset is hosted, section within `package.json` and folder into snipacks directory
+- **file** define the filename where to save content
+- **source** is an ID, PATH or URL to fetch content
