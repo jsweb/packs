@@ -3,28 +3,36 @@
 'use strict'
 
 let fs = require('fs'),
+    http = require('http'),
     https = require('https'),
     path = require('path'),
     proc = require('process'),
-    cwd = proc.cwd(),
-    cfg = path.join(cwd, 'package.json'),
-    deps = require(cfg).snipacks || {},
+    cfg = path.join(proc.cwd(), 'package.json'),
+    proj = require(cfg),
+    snpks = proj.snipacks || {},
+    argv = proc.argv.slice(1).filter(i => !/snipacks/.test(i)),
+    cmd = argv[0] || 'update',
+    args = argv.slice(1),
     snipacks = {
         dir: 'snipacks',
         update() {
+            this.mkdir(this.loop)
+        },
+        mkdir(done) {
             fs.stat(this.dir, e => {
-                return e ? fs.mkdir(this.dir, () => this.loop()) : this.loop()
+                return e ? fs.mkdir(this.dir, () => done()) : done()
             })
         },
         loop() {
             console.log('Async fetching snippets/packages...')
-            Object.keys(deps).filter(k => k !== 'dir').forEach(k => this[k](deps[k]))
+            Object.keys(snpks).filter(k => k !== 'dir').forEach(k => this[k](snpks[k]))
             console.log(`Your files will be saved at ${this.dir}`)
         },
         getfile(url, sub, out) {
-            const dir = path.join(this.dir, sub),
+            const web = /^https/i.test(url) ? https : http,
+                dir = path.join(this.dir, sub),
                 file = path.join(dir, out),
-                request = () => https.get(url, resp => resp.pipe(fs.createWriteStream(file)))
+                request = () => web.get(url, resp => resp.pipe(fs.createWriteStream(file)))
             fs.stat(dir, e => e ? fs.mkdir(dir, request) : request())
         },
         unpkg(packs) {
@@ -52,14 +60,11 @@ let fs = require('fs'),
         },
         snippets(type, codes) {
             const base = {
-                    gist: 'https://gist.githubusercontent.com',
-                    gitlab: 'https://gitlab.com/snippets'
-                },
-                src = base[type]
-            
+                gist: 'https://gist.githubusercontent.com',
+                gitlab: 'https://gitlab.com/snippets'
+            }
             Object.keys(codes).forEach(file => {
-                const id = codes[file]
-                this.getfile(`${src}/${id}/raw`, type, file)
+                this.getfile(`${base[type]}/${codes[file]}/raw`, type, file)
             })
         },
         gist(codes) {
@@ -67,7 +72,23 @@ let fs = require('fs'),
         },
         gitlab(codes) {
             this.snippets('gitlab', codes)
+        },
+        web(assets) {
+            Object.keys(assets).forEach(file => this.getfile(assets[file], 'web', file))
+        },
+        add(type, file, source) {
+            let dep = {}
+            dep[file] = source
+            
+            snpks[type] = Object.assign(dep, snpks[type])
+            proj.snipacks = Object.assign(snpks, proj.snipacks)
+            
+            this.mkdir(() => {
+                fs.writeFile(cfg, JSON.stringify(proj, null, '\t'), () => this[type](dep))
+            })
         }
     }
 
-snipacks.update.call(snipacks)
+return snipacks[cmd]
+    ? snipacks[cmd].apply(snipacks, args)
+    : console.log(cmd, 'is not a valid command!')

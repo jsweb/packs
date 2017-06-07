@@ -5,7 +5,7 @@ A dead simple, fast and objective CLI package manager for anything without depen
 - CLI
 - Package/Snippets/Assets manager
 - Dead simple, fast, objective
-- Get only main files from NPM packages
+- Get only files you want from NPM packages
 - Get Gist and Gitlab snippets to save as code
 - All automated by a simple JSON config file
 
@@ -48,17 +48,20 @@ Create a `snipacks` section like this:
 	"snipacks": {
 		"unpkg": {
             "worktopus.js": "worktopus",
-            "moment.js": "moment/min/moment-with-locales.min.js",
-            "jquery.js": "jquery/dist/jquery.min.js"
+            "moment.js": "moment/min/moment-with-locales.min.js"
+        },
+		"gist": {
+            "kav.js": "steven89/f7aedca683deee6ee8211399e94cd583",
+            "asq.js": "jyamashiro24/17ac171a73246744b09a47d6c9d77241"
         },
         "gitlab": {
             "dom.js": "34295",
             "dstrbg.styl": "1662645",
             "tplrender.js": "1663326"
         },
-		"gist": {
-            "kav.js": "steven89/f7aedca683deee6ee8211399e94cd583",
-            "asq.js": "jyamashiro24/17ac171a73246744b09a47d6c9d77241"
+        "web": {
+            "jquery.js": "https://code.jquery.com/jquery-3.2.1.slim.min.js",
+            "animate.css": "https://raw.githubusercontent.com/daneden/animate.css/master/animate.min.css"
         }
 	}
 }
@@ -77,3 +80,35 @@ snipacks
 | - gitlab
 | - unpkg
 ```
+
+## How it works
+
+### NPM / Unpkg
+
+**Snipacks** check NPM packages versions on NPM registry but get the code from Unpkg CDN. So, NPM packages must to be at `unpkg` section.
+
+Optionally, you can use SEMVER tags if you need to specific packages versions, like:
+
+```json
+{
+	"snipacks": {
+		"unpkg": {
+            "moment.js": "moment@2.18.1/min/moment-with-locales.min.js"
+        }
+	}
+}
+```
+
+If no version was defined, latest version is default.
+
+### Gist and Gitlab Snippets
+
+For these codes/snippets repositories, **Snipacks** simply fetch the raw files as is.
+
+The codes must to be public available.
+
+Gist needs `user/hash` to identify and get the code. Gitlab Snippets just need an `id`.
+
+### Web / Anything
+
+**Snipacks** can fetch any public file online. Just map it into `web` section.
