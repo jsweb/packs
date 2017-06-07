@@ -117,7 +117,7 @@ Gist needs `user/hash` to identify and get the code. Gitlab Snippets just need a
 
 ## CLI commands
 
-**Snipacks** CLI support some simple commands. If none was given, `update` is default.
+**Snipacks** CLI support some simple commands. If none is given, `update` is default.
 
 ### update
 
@@ -153,4 +153,12 @@ But you can simply run `snipacks del [type] [file]`:
 
 ```
 snipacks del web jquery.js
+```
+
+## list
+
+Prints `snipacks` section from `package.json`. Just for convenience!
+
+```
+snipacks list
 ```

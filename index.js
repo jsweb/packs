@@ -100,6 +100,9 @@ let fs = require('fs'),
                 },
                 delfile = done => fs.unlink(check, done)
             fs.stat(check, e => e ? delkey() : delfile(delkey))
+        },
+        list() {
+            console.log(JSON.stringify(proj.snipacks, null, '    '))
         }
     }
 
