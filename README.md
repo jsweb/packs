@@ -125,9 +125,9 @@ Update/fetch all of your assets with this simple command: `snipacks update` or s
 
 ### add
 
-You can add new assets to your project manually editing `snipacks` section at `package.json` and runing `update` command.
+You can add new assets to your project by manually adding `snipacks` section at `package.json` and runing `update` command.
 
-But `snipacks add` command is a better method:
+But `snipacks add [type] [file] [source]` command is a better way:
 
 ```
 snipacks add unpkg moment.js moment/min/moment-with-locales.min.js
@@ -139,8 +139,18 @@ snipacks add gitlab dom.js 34295
 snipacks add web animate.css https://raw.githubusercontent.com/daneden/animate.css/master/animate.min.css
 ```
 
-Arguments must follow this pattern: `snipacks add [type] [file] [source]`.
+Arguments must follow this pattern:
 
-- **type** represents the Internet end point where asset is hosted, section within `package.json` and folder into snipacks directory
+- **type** represents the Internet end point where asset is hosted, section within `snipacks` at `package.json` and folder into snipacks directory
 - **file** define the filename where to save content
 - **source** is an ID, PATH or URL to fetch content
+
+### del
+
+To remove assets you can just delete files from directory and remove entry from `snipacks` section at `package.json`.
+
+But you can simply run `snipacks del [type] [file]`:
+
+```
+snipacks del web jquery.js
+```

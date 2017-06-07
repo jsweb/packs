@@ -16,23 +16,24 @@ let fs = require('fs'),
     snipacks = {
         dir: 'snipacks',
         update() {
-            this.mkdir(this.loop)
+            this.mkdir(() => {
+                console.log('Async fetching snippets/packages...')
+                Object.keys(snpks).filter(k => k !== 'dir').forEach(k => this[k](snpks[k]))
+            })
         },
         mkdir(done) {
             fs.stat(this.dir, e => {
                 return e ? fs.mkdir(this.dir, () => done()) : done()
             })
         },
-        loop() {
-            console.log('Async fetching snippets/packages...')
-            Object.keys(snpks).filter(k => k !== 'dir').forEach(k => this[k](snpks[k]))
-            console.log(`Your files will be saved at ${this.dir}`)
-        },
         getfile(url, sub, out) {
             const web = /^https/i.test(url) ? https : http,
                 dir = path.join(this.dir, sub),
                 file = path.join(dir, out),
-                request = () => web.get(url, resp => resp.pipe(fs.createWriteStream(file)))
+                request = () => web.get(url, resp => {
+                    resp.pipe(fs.createWriteStream(file))
+                    console.log('snipacks', '/', sub, '/', out, 'saved!');
+                })
             fs.stat(dir, e => e ? fs.mkdir(dir, request) : request())
         },
         unpkg(packs) {
@@ -76,16 +77,29 @@ let fs = require('fs'),
         web(assets) {
             Object.keys(assets).forEach(file => this.getfile(assets[file], 'web', file))
         },
+        packup(done) {
+            fs.writeFile(cfg, JSON.stringify(proj, null, '\t'), done)
+        },
         add(type, file, source) {
             let dep = {}
             dep[file] = source
-            
-            snpks[type] = Object.assign(dep, snpks[type])
+
+            snpks[type] = Object.assign(snpks[type] || {}, dep)
             proj.snipacks = Object.assign(snpks, proj.snipacks)
-            
+
             this.mkdir(() => {
-                fs.writeFile(cfg, JSON.stringify(proj, null, '\t'), () => this[type](dep))
+                this.packup(() => this[type](dep))
             })
+        },
+        del(type, file) {
+            const check = path.join(this.dir, type, file),
+                resp = () => console.log('snipacks', '/', type, '/', file, 'deleted!'),
+                delkey = () => {
+                    delete proj.snipacks[type][file]
+                    this.packup(resp)
+                },
+                delfile = done => fs.unlink(check, done)
+            fs.stat(check, e => e ? delkey() : delfile(delkey))
         }
     }
 
