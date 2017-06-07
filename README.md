@@ -29,13 +29,13 @@ Then, include a new command in `package.json` into `scripts` section:
 
 Choose a name of your preference, but point it to `snipacks` command.
 
-Or, if you prefer, you can install it globaly:
+Or, if you prefer, install it globaly:
 
 ```
 npm i -g snipacks
 ```
 
-Then you can run CLI command at root directory of any project.
+Then you can run CLI `snipacks` command at root directory of any project.
 
 ## Usage
 
@@ -62,4 +62,18 @@ Create a `snipacks` section like this:
         }
 	}
 }
+```
+
+Then, just run `snipacks` CLI command!
+
+## Result
+
+**Snipacks** saves downloaded files into a diretory structure corresponding to `snipacks` section at `package.json`:
+
+```
+./
+snipacks
+| - gist
+| - gitlab
+| - unpkg
 ```
