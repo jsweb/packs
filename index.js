@@ -1,30 +1,33 @@
 #!/usr/bin/env node
 
-'use strict'
+'use strict';
 
-let fs = require('fs'),
+const fs = require('fs'),
     http = require('http'),
     https = require('https'),
     path = require('path'),
-    proc = require('process'),
-    cfg = path.join(proc.cwd(), 'package.json'),
-    proj = require(cfg),
+    cfg = path.join(process.cwd(), 'package.json')
+
+let proj = require(cfg),
     snpks = proj.snipacks || {},
-    argv = proc.argv.slice(1).filter(i => !/snipacks/.test(i)),
+    argv = process.argv.slice(1).filter(i => !/snipacks/.test(i)),
     cmd = argv[0] || 'update',
     args = argv.slice(1),
     snipacks = {
         dir: 'snipacks',
         update() {
-            this.mkdir(() => {
-                console.log('Async fetching snippets/packages...')
-                Object.keys(snpks).filter(k => k !== 'dir').forEach(k => this[k](snpks[k]))
-            })
+            const all = () => this.getall(),
+                dir = () => this.mkdir(all)
+            return this.packup(dir)
         },
         mkdir(done) {
             fs.stat(this.dir, e => {
                 return e ? fs.mkdir(this.dir, () => done()) : done()
             })
+        },
+        getall() {
+            console.log('Async fetching snippets/packages...')
+            Object.keys(snpks).forEach(k => this[k](snpks[k]))
         },
         getfile(url, sub, out) {
             const web = /^https/i.test(url) ? https : http,
@@ -78,6 +81,14 @@ let fs = require('fs'),
             Object.keys(assets).forEach(file => this.getfile(assets[file], 'web', file))
         },
         packup(done) {
+            const result = Object.keys(proj.snipacks).sort().reduce((o, i) => {
+                o[i] = Object.keys(proj.snipacks[i]).sort().reduce((r, s) => {
+                    r[s] = proj.snipacks[i][s]
+                    return r
+                }, {})
+                return o
+            }, {})
+            proj.snipacks = result
             fs.writeFile(cfg, JSON.stringify(proj, null, '\t'), done)
         },
         add(type, file, source) {

@@ -1,41 +1,24 @@
 {
-    "name": "snipacks",
-    "version": "1.1.0",
-    "description": "A dead simple, fast and objective CLI package manager for anything without dependencies",
-    "main": "index.js",
-    "repository": "git@gitlab.com:tecno.site/snipacks.git",
-    "author": "Alex Bruno Cáceres <git.alexbr@outlook.com>",
-    "license": "MIT",
-    "tags": [
-        "cli",
-        "gist",
-        "manager",
-        "npm",
-        "package",
-        "snippets",
-        "unpkg"
-    ],
-    "bin": {
-        "snipacks": "index.js"
-    },
-    "snipacks": {
-        "unpkg": {
-            "worktopus.js": "worktopus",
-            "moment.js": "moment/min/moment-with-locales.min.js"
-        },
-        "gitlab": {
-            "dom.js": "34295",
-            "dstrbg.styl": "1662645",
-            "tplrender.js": "1663326"
-        },
-        "gist": {
-            "kav.js": "steven89/f7aedca683deee6ee8211399e94cd583",
-            "asq.js": "jyamashiro24/17ac171a73246744b09a47d6c9d77241"
-        },
-        "web": {
-            "jquery.js": "https://code.jquery.com/jquery-3.2.1.slim.min.js",
-            "animate.css": "https://raw.githubusercontent.com/daneden/animate.css/master/animate.min.css",
-            "goo.png": "https://ssl.gstatic.com/gb/images/v1_b3735dd8.png"
-        }
-    }
+	"name": "snipacks",
+	"version": "1.1.0",
+	"description": "A dead simple, fast and objective CLI package manager for anything without dependencies",
+	"main": "index.js",
+	"repository": "git@gitlab.com:tecno.site/snipacks.git",
+	"author": "Alex Bruno Cáceres <git.alexbr@outlook.com>",
+	"license": "MIT",
+	"tags": [
+		"cli",
+		"gist",
+		"manager",
+		"npm",
+		"package",
+		"snippets",
+		"unpkg"
+	],
+	"bin": {
+		"snipacks": "index.js"
+	},
+	"scripts": {
+		"start": "node index.js"
+	}
 }
