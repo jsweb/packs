@@ -1,6 +1,6 @@
 {
 	"name": "snipacks",
-	"version": "1.3.0",
+	"version": "1.3.1",
 	"description": "A dead simple, fast and objective manager for packages, snippets and assets",
 	"main": "index.js",
 	"repository": "git@gitlab.com:tecnos/snipacks.git",
