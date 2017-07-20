@@ -46,25 +46,33 @@ Create a `snipacks` section like this:
 
 ```json
 {
-    "snipacks": {
-        "unpkg": {
-            "worktopus.js": "worktopus",
-            "moment.js": "moment/min/moment-with-locales.min.js"
-        },
-        "gist": {
-            "kav.js": "steven89/f7aedca683deee6ee8211399e94cd583",
-            "asq.js": "jyamashiro24/17ac171a73246744b09a47d6c9d77241"
-        },
-        "gitlab": {
-            "dom.js": "34295",
-            "dstrbg.styl": "1662645",
-            "tplrender.js": "1663326"
-        },
-        "web": {
-            "jquery.js": "https://code.jquery.com/jquery-3.2.1.slim.min.js",
-            "animate.css": "https://raw.githubusercontent.com/daneden/animate.css/master/animate.min.css"
-        }
-    }
+   "snipacks": {
+      "unpkg": {
+         "worktopus.js": "worktopus",
+         "moment.js": "moment/min/moment-with-locales.min.js"
+      },
+      "gist": {
+         "kav.js": "steven89/f7aedca683deee6ee8211399e94cd583",
+         "asq.js": "jyamashiro24/17ac171a73246744b09a47d6c9d77241"
+      },
+      "gitlab": {
+         "dom.js": "34295",
+         "dstrbg.styl": "1662645",
+         "tplrender.js": "1663326"
+      },
+      "web": {
+         "jquery.js": "https://code.jquery.com/jquery-3.2.1.slim.min.js",
+         "animate.css": "https://raw.githubusercontent.com/daneden/animate.css/master/animate.min.css"
+      },
+      "bundle": {
+         "lib.js": [
+            "https://unpkg.com/core-js/client/core.min.js",
+            "https://unpkg.com/vue/dist/vue.min.js",
+            "https://unpkg.com/vuex/dist/vuex.min.js",
+            "https://unpkg.com/vue-router/dist/vue-router.min.js"
+         ]
+      }
+   }
 }
 ```
 
@@ -79,6 +87,7 @@ Key-value pairs within sections represent file-source, so key is the filename wh
 ```
 ./
 | -${snipacks dir}
+   | - bundle
    | - gist
    | - gitlab
    | - unpkg
@@ -130,6 +139,14 @@ Gist needs `user/hash` to identify and get the code. Gitlab Snippets just need a
 ### Web / Anything
 
 **Snipacks** can fetch any public file online. Just map it into `web` section.
+
+### Bundle (new in 1.3.0)
+
+If you want to build a bundle of libs it is easy with **Snipacks**.
+
+Map an Array with urls to save your libs to a file into `bundle` section.
+
+All fetched content will be concatenated in the same order and saved to the file.
 
 ## CLI commands
 
