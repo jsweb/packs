@@ -51,32 +51,16 @@ let proj = require(cfg),
             console.log(JSON.stringify(proj.snipacks, null, '    '))
         },
         gist(codes) {
-            this.snippets('gist', codes)
+            this.fetch('gist', codes)
         },
         gitlab(codes) {
-            this.snippets('gitlab', codes)
-        },
-        web(assets) {
-            Object.keys(assets).forEach(file => this.getfile(assets[file], 'web', file))
+            this.fetch('gitlab', codes)
         },
         unpkg(packs) {
-            const unpkg = 'https://unpkg.com',
-                npm = 'https://registry.npmjs.org'
-
-            Object.keys(packs).forEach(file => {
-                const semver = packs[file].includes('@'),
-                    src = packs[file].split(semver ? '@' : '/'),
-                    pack = `${unpkg}/${src[0]}`,
-                    getfile = req => this.getfile(`${pack}@${req}`, 'unpkg', file)
-
-                return semver ? getfile(src[1]) : get(`${npm}/${src[0]}`).then(resp => {
-                    const json = JSON.parse(resp),
-                        vrs = json['dist-tags'].latest,
-                        rest = (semver ? src[1].split('/') : src).slice(1).join('/'),
-                        req = rest ? `${vrs}/${rest}` : vrs
-                    return getfile(req)
-                })
-            })
+            this.fetch('unpkg', packs)
+        },
+        web(assets) {
+            this.fetch('web', assets)
         },
         bundle(assets) {
             const sub = 'bundle',
@@ -97,9 +81,17 @@ let proj = require(cfg),
                 return e ? mkdirp(this.dir, () => done()) : done()
             })
         },
-        getall() {
-            console.log('Async fetching snippets/packages...')
-            Object.keys(snpks).filter(k => k !== 'dir').forEach(k => this[k](snpks[k]))
+        fetch(type, codes) {
+            const base = {
+                gist: 'https://gist.githubusercontent.com',
+                gitlab: 'https://gitlab.com/snippets',
+                unpkg: 'https://unpkg.com'
+            }
+            Object.keys(codes).forEach(file => {
+                let src = /^web$/.test(type) ? codes[file] : `${base[type]}/${codes[file]}`,
+                    url = /^gis?t/.test(type) ? `${src}/raw` : src
+                this.getfile(url, type, file)
+            })
         },
         getfile(url, sub, out) {
             const dir = path.join(this.dir, sub),
@@ -111,23 +103,20 @@ let proj = require(cfg),
                 })
             fs.stat(dir, e => e ? fs.mkdir(dir, fetch) : fetch())
         },
-        snippets(type, codes) {
-            const base = {
-                gist: 'https://gist.githubusercontent.com',
-                gitlab: 'https://gitlab.com/snippets'
-            }
-            Object.keys(codes).forEach(file => {
-                this.getfile(`${base[type]}/${codes[file]}/raw`, type, file)
-            })
+        getall() {
+            console.log('Async fetching snippets/packages...')
+            Object.keys(snpks).filter(k => k !== 'dir').forEach(k => this[k](snpks[k]))
         },
         packup(done) {
-            const result = Object.keys(proj.snipacks).filter(k => k !== 'dir').sort().reduce((o, i) => {
-                o[i] = Object.keys(proj.snipacks[i]).sort().reduce((r, s) => {
-                    r[s] = proj.snipacks[i][s]
-                    return r
+            const result = Object.keys(proj.snipacks)
+                .filter(k => k !== 'dir').sort()
+                .reduce((o, i) => {
+                    o[i] = Object.keys(proj.snipacks[i]).sort().reduce((r, s) => {
+                        r[s] = proj.snipacks[i][s]
+                        return r
+                    }, {})
+                    return o
                 }, {})
-                return o
-            }, {})
             proj.snipacks = Object.assign({ dir: this.dir }, result)
             fs.writeFile(cfg, JSON.stringify(proj, null, '\t'), done)
         }

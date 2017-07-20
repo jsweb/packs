@@ -24,5 +24,33 @@
 	"dependencies": {
 		"mkdirp": "^0.5.1",
 		"request": "^2.81.0"
+	},
+	"snipacks": {
+		"dir": "snipacks",
+		"bundle": {
+			"lib.js": [
+				"https://unpkg.com/core-js/client/core.min.js",
+				"https://unpkg.com/vue/dist/vue.min.js",
+				"https://unpkg.com/vuex/dist/vuex.min.js",
+				"https://unpkg.com/vue-router/dist/vue-router.min.js"
+			]
+		},
+		"gist": {
+			"asq.js": "jyamashiro24/17ac171a73246744b09a47d6c9d77241",
+			"kav.js": "steven89/f7aedca683deee6ee8211399e94cd583"
+		},
+		"gitlab": {
+			"dom.js": "34295",
+			"dstrbg.styl": "1662645",
+			"tplrender.js": "1663326"
+		},
+		"unpkg": {
+			"moment.js": "moment/min/moment-with-locales.min.js",
+			"worktopus.js": "worktopus"
+		},
+		"web": {
+			"animate.css": "https://raw.githubusercontent.com/daneden/animate.css/master/animate.min.css",
+			"jquery.js": "https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		}
 	}
 }
