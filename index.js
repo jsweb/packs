@@ -6,6 +6,7 @@ const fs = require('fs'),
     http = require('http'),
     https = require('https'),
     path = require('path'),
+    mkdirp = require('mkdirp'),
     cfg = path.join(process.cwd(), 'package.json')
 
 let proj = require(cfg),
@@ -14,7 +15,7 @@ let proj = require(cfg),
     cmd = argv[0] || 'update',
     args = argv.slice(1),
     snipacks = {
-        dir: 'snipacks',
+        dir: snpks.dir || 'snipacks',
         update() {
             const all = () => this.getall(),
                 dir = () => this.mkdir(all)
@@ -22,12 +23,12 @@ let proj = require(cfg),
         },
         mkdir(done) {
             fs.stat(this.dir, e => {
-                return e ? fs.mkdir(this.dir, () => done()) : done()
+                return e ? mkdirp(this.dir, () => done()) : done()
             })
         },
         getall() {
             console.log('Async fetching snippets/packages...')
-            Object.keys(snpks).forEach(k => this[k](snpks[k]))
+            Object.keys(snpks).filter(k => k !== 'dir').forEach(k => this[k](snpks[k]))
         },
         getfile(url, sub, out) {
             const web = /^https/i.test(url) ? https : http,
@@ -35,7 +36,7 @@ let proj = require(cfg),
                 file = path.join(dir, out),
                 request = () => web.get(url, resp => {
                     resp.pipe(fs.createWriteStream(file))
-                    console.log('snipacks', '/', sub, '/', out, 'saved!');
+                    console.log(this.dir, '/', sub, '/', out, 'saved!');
                 })
             fs.stat(dir, e => e ? fs.mkdir(dir, request) : request())
         },
@@ -81,14 +82,14 @@ let proj = require(cfg),
             Object.keys(assets).forEach(file => this.getfile(assets[file], 'web', file))
         },
         packup(done) {
-            const result = Object.keys(proj.snipacks).sort().reduce((o, i) => {
+            const result = Object.keys(proj.snipacks).filter(k => k !== 'dir').sort().reduce((o, i) => {
                 o[i] = Object.keys(proj.snipacks[i]).sort().reduce((r, s) => {
                     r[s] = proj.snipacks[i][s]
                     return r
                 }, {})
                 return o
             }, {})
-            proj.snipacks = result
+            proj.snipacks = Object.assign({ dir: this.dir }, result)
             fs.writeFile(cfg, JSON.stringify(proj, null, '\t'), done)
         },
         add(type, file, source) {
@@ -104,7 +105,7 @@ let proj = require(cfg),
         },
         del(type, file) {
             const check = path.join(this.dir, type, file),
-                resp = () => console.log('snipacks', '/', type, '/', file, 'deleted!'),
+                resp = () => console.log(this.dir, '/', type, '/', file, 'deleted!'),
                 delkey = () => {
                     delete proj.snipacks[type][file]
                     this.packup(resp)

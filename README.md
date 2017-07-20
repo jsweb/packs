@@ -1,13 +1,14 @@
 # Snipacks
 
-A dead simple, fast and objective CLI package manager for anything without dependencies
+A dead simple, fast and objective manager for packages, snippets and assets.
 
 - CLI
-- Package/Snippets/Assets manager
-- Dead simple, fast, objective
+- Packages/Snippets/Assets manager
+- Simple, fast, objective
 - Get only files you want from NPM packages
-- Get Gist and Gitlab snippets to save as code
-- All automated by a simple JSON config file
+- Fetch Gist and Gitlab snippets to save as code
+- Grab anything from the web
+- All automated by a simple JSON setup
 
 ## Install
 
@@ -35,7 +36,7 @@ Or, if you prefer, install it globaly:
 npm i -g snipacks
 ```
 
-Then you can run CLI `snipacks` command at root directory of any project.
+Then you can run CLI `snipacks` globaly.
 
 ## Usage
 
@@ -45,12 +46,12 @@ Create a `snipacks` section like this:
 
 ```json
 {
-	"snipacks": {
-		"unpkg": {
+    "snipacks": {
+        "unpkg": {
             "worktopus.js": "worktopus",
             "moment.js": "moment/min/moment-with-locales.min.js"
         },
-		"gist": {
+        "gist": {
             "kav.js": "steven89/f7aedca683deee6ee8211399e94cd583",
             "asq.js": "jyamashiro24/17ac171a73246744b09a47d6c9d77241"
         },
@@ -63,13 +64,13 @@ Create a `snipacks` section like this:
             "jquery.js": "https://code.jquery.com/jquery-3.2.1.slim.min.js",
             "animate.css": "https://raw.githubusercontent.com/daneden/animate.css/master/animate.min.css"
         }
-	}
+    }
 }
 ```
 
 Then, just run `snipacks` CLI command!
 
-Key-value pairs within sections represent file-source, so key is the filename where asset will be saved and value is the source to fetch.
+Key-value pairs within sections represent file-source, so key is the filename where the asset will be saved and value is the source to fetch.
 
 ## Result
 
@@ -77,10 +78,25 @@ Key-value pairs within sections represent file-source, so key is the filename wh
 
 ```
 ./
-snipacks
-| - gist
-| - gitlab
-| - unpkg
+| -${snipacks dir}
+   | - gist
+   | - gitlab
+   | - unpkg
+   | - web
+```
+
+## Snipacks directory (new in 1.2.0)
+
+By default, **Snipacks** save downloads inside a `snipacks` folder, but it is possible to set a custom path to save your snipakcs.
+
+Just define `dir` on setup at `package.json`:
+
+```
+{
+    "snipacks": {
+        "dir": "path/to/your/custom/snipacks"
+    }
+}
 ```
 
 ## How it works
@@ -89,7 +105,7 @@ snipacks
 
 **Snipacks** check NPM packages versions on NPM registry but get the code from Unpkg CDN. So, NPM packages must to be at `unpkg` section.
 
-Optionally, you can use SEMVER tags if you need to specific packages versions, like:
+Optionally, you can use SEMVER tags if you need to specify packages versions, like:
 
 ```json
 {
