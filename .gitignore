@@ -60,3 +60,6 @@ typings/
 
 # Custom
 package-lock.json
+mochawesome-report
+public
+.npmrc
