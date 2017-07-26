@@ -10,8 +10,8 @@ const fs = require('fs'),
 
 function get(url) {
     return new Promise(done => {
-        request.get(url, (e, res, body) => done(body))
-    })
+        request.get(url, (e, res, body) => e ? fail(e) : done(body))
+    }).catch(e => console.error(e))
 }
 
 let proj = require(cfg),
@@ -39,7 +39,7 @@ let proj = require(cfg),
         },
         del(type, file) {
             const check = path.join(this.dir, type, file),
-                resp = () => console.log(this.dir, '/', type, '/', file, 'deleted!'),
+                resp = () => console.log(this.dir, '/', type, '/', file, 'deleted'),
                 delkey = () => {
                     delete proj.snipacks[type][file]
                     this.packup(resp)
@@ -70,7 +70,7 @@ let proj = require(cfg),
                     Promise.all(assets[out].map(get)).then(codes => {
                         const code = codes.join('\n').replace(/\/\/#.+\.map\s/g, '')
                         fs.writeFile(file, code, () => {
-                            console.log(this.dir, '/', sub, '/', out, 'saved!')
+                            console.log(this.dir, '/', sub, '/', out, 'saved')
                         })
                     })
                 })
@@ -96,11 +96,12 @@ let proj = require(cfg),
         getfile(url, sub, out) {
             const dir = path.join(this.dir, sub),
                 file = path.join(dir, out),
-                fetch = () => get(url).then(resp => {
-                    fs.writeFile(file, resp, () => {
-                        console.log(this.dir, '/', sub, '/', out, 'saved!')
+                fetch = () => request(url)
+                    .pipe(fs.createWriteStream(file))
+                    .on('close', () => {
+                        console.log(this.dir, '/', sub, '/', out, 'saved')
                     })
-                })
+                    .on('error', e => console.error(e))
             fs.stat(dir, e => e ? fs.mkdir(dir, fetch) : fetch())
         },
         getall() {
