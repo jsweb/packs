@@ -6,7 +6,8 @@ const fs = require('fs'),
     path = require('path'),
     mkdirp = require('mkdirp'),
     request = require('request'),
-    cfg = path.join(process.cwd(), 'package.json')
+    cfg = path.join(process.cwd(), 'package.json'),
+    env = process.env.NODE_ENV || 'dev'
 
 function get(url) {
     return new Promise(done => {
@@ -24,7 +25,7 @@ let proj = require(cfg),
         update() {
             const all = () => this.getall(),
                 dir = () => this.mkdir(all)
-            return this.packup(dir)
+            return /dev/i.test(env) ? this.packup(dir) : dir()
         },
         add(type, file, source) {
             let dep = {}

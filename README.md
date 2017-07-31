@@ -152,9 +152,11 @@ All fetched content will be concatenated in the same order and saved to the file
 
 **Snipacks** CLI support some simple commands. If none is given, `update` is default.
 
-### update
+### update (default)
 
 Update/fetch all of your assets with this simple command: `snipacks update` or simply `snipacks`.
+
+**Important:** By default, this command rewrites `snipacks` section at `package.json` file to sort content. If you need to prevent this behavior for continous integration or any other production workflow, make sure to set `NODE_ENV` with any value that not contains `prod` (case not sensitive).
 
 ### add
 
@@ -178,6 +180,8 @@ Arguments must follow this pattern:
 - **file** define the filename where to save content
 - **source** is an ID, PATH or URL to fetch content
 
+**Important:** This command ever writes data to `package.json` file to update `snipacks` section.
+
 ### del
 
 To remove assets you can just delete files from directory and remove entry from `snipacks` section at `package.json`.
@@ -187,6 +191,8 @@ But you can simply run `snipacks del [type] [file]`:
 ```
 snipacks del web jquery.js
 ```
+
+**Important:** This command ever writes data to `package.json` file to update `snipacks` section.
 
 ## list
 
