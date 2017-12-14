@@ -2,13 +2,13 @@
 
 A dead simple, fast and objective manager for packages, snippets and assets.
 
-- CLI
-- Packages/Snippets/Assets manager
-- Simple, fast, objective
-- Get only files you want from NPM packages
-- Fetch Gist and Gitlab snippets to save as code
-- Grab anything from the web
-- All automated by a simple JSON setup
+* CLI
+* Packages/Snippets/Assets manager
+* Simple, fast, objective
+* Get only files you want from NPM packages
+* Fetch Gist and Gitlab snippets to save as code
+* Grab anything from the web
+* All automated by a simple JSON setup
 
 ## Install
 
@@ -18,17 +18,23 @@ In your project:
 npm i -S snipacks
 ```
 
+Or...
+
+```
+yarn add snipacks
+```
+
 Then, include a new command in `package.json` into `scripts` section:
 
 ```json
 {
-	"scripts": {
-		"snipacks": "snipacks"
-	}
+  "scripts": {
+    "snipacks": "snipacks"
+  }
 }
 ```
 
-Choose a name of your preference, but point it to `snipacks` command.
+Choose a name of your preference, but point it to `snipacks`.
 
 Or, if you prefer, install it globaly:
 
@@ -36,7 +42,7 @@ Or, if you prefer, install it globaly:
 npm i -g snipacks
 ```
 
-Then you can run CLI `snipacks` globaly.
+Then you can run CLI `snipacks` anywhere.
 
 ## Usage
 
@@ -46,33 +52,34 @@ Create a `snipacks` section like this:
 
 ```json
 {
-   "snipacks": {
-      "unpkg": {
-         "worktopus.js": "worktopus",
-         "moment.js": "moment/min/moment-with-locales.min.js"
-      },
-      "gist": {
-         "kav.js": "steven89/f7aedca683deee6ee8211399e94cd583",
-         "asq.js": "jyamashiro24/17ac171a73246744b09a47d6c9d77241"
-      },
-      "gitlab": {
-         "dom.js": "34295",
-         "dstrbg.styl": "1662645",
-         "tplrender.js": "1663326"
-      },
-      "web": {
-         "jquery.js": "https://code.jquery.com/jquery-3.2.1.slim.min.js",
-         "animate.css": "https://raw.githubusercontent.com/daneden/animate.css/master/animate.min.css"
-      },
-      "bundle": {
-         "lib.js": [
-            "https://unpkg.com/core-js/client/core.min.js",
-            "https://unpkg.com/vue/dist/vue.min.js",
-            "https://unpkg.com/vuex/dist/vuex.min.js",
-            "https://unpkg.com/vue-router/dist/vue-router.min.js"
-         ]
-      }
-   }
+  "snipacks": {
+    "unpkg": {
+      "worktopus.js": "worktopus",
+      "moment.js": "moment/min/moment-with-locales.min.js"
+    },
+    "gist": {
+      "kav.js": "steven89/f7aedca683deee6ee8211399e94cd583",
+      "asq.js": "jyamashiro24/17ac171a73246744b09a47d6c9d77241"
+    },
+    "gitlab": {
+      "dom.js": "34295",
+      "dstrbg.styl": "1662645",
+      "tplrender.js": "1663326"
+    },
+    "web": {
+      "jquery.js": "https://code.jquery.com/jquery-3.2.1.slim.min.js",
+      "animate.css":
+        "https://raw.githubusercontent.com/daneden/animate.css/master/animate.min.css"
+    },
+    "bundle": {
+      "lib.js": [
+        "https://unpkg.com/core-js/client/core.min.js",
+        "https://unpkg.com/vue/dist/vue.min.js",
+        "https://unpkg.com/vuex/dist/vuex.min.js",
+        "https://unpkg.com/vue-router/dist/vue-router.min.js"
+      ]
+    }
+  }
 }
 ```
 
@@ -94,7 +101,7 @@ Key-value pairs within sections represent file-source, so key is the filename wh
    | - web
 ```
 
-## Snipacks directory (new in 1.2.0)
+## Snipacks directory (since 1.2.0)
 
 By default, **Snipacks** save downloads inside a `snipacks` folder, but it is possible to set a custom path to save your snipakcs.
 
@@ -112,17 +119,17 @@ Just define `dir` on setup at `package.json`:
 
 ### NPM / Unpkg
 
-**Snipacks** check NPM packages versions on NPM registry but get the code from Unpkg CDN. So, NPM packages must to be at `unpkg` section.
+**Snipacks** get the code for NPM packages from Unpkg CDN. So, NPM packages must to be at `unpkg` section.
 
 Optionally, you can use SEMVER tags if you need to specify packages versions, like:
 
 ```json
 {
-	"snipacks": {
-		"unpkg": {
-            "moment.js": "moment@2.18.1/min/moment-with-locales.min.js"
-        }
-	}
+  "snipacks": {
+    "unpkg": {
+      "moment.js": "moment@2.18.1/min/moment-with-locales.min.js"
+    }
+  }
 }
 ```
 
@@ -140,7 +147,7 @@ Gist needs `user/hash` to identify and get the code. Gitlab Snippets just need a
 
 **Snipacks** can fetch any public file online. Just map it into `web` section.
 
-### Bundle (new in 1.3.0)
+### Bundle (since 1.3.0)
 
 If you want to build a bundle of libs it is easy with **Snipacks**.
 
@@ -156,7 +163,7 @@ All fetched content will be concatenated in the same order and saved to the file
 
 Update/fetch all of your assets with this simple command: `snipacks update` or simply `snipacks`.
 
-**Important:** By default, this command rewrites `snipacks` section at `package.json` file to sort content. If you need to prevent this behavior for continous integration or any other production workflow, make sure to set `NODE_ENV` with any value that not contains `prod` (case not sensitive).
+**Important:** By default, this command rewrites `snipacks` section at `package.json` file to sort content. If you need to prevent this behavior for continous integration or any other production workflow, make sure to set `NODE_ENV` with any value that not contains `dev` (case not sensitive).
 
 ### add
 
@@ -176,9 +183,9 @@ snipacks add web animate.css https://raw.githubusercontent.com/daneden/animate.c
 
 Arguments must follow this pattern:
 
-- **type** represents the Internet end point where asset is hosted, section within `snipacks` at `package.json` and folder into snipacks directory
-- **file** define the filename where to save content
-- **source** is an ID, PATH or URL to fetch content
+* **type** represents the Internet end point where asset is hosted, section within `snipacks` at `package.json` and folder into snipacks directory
+* **file** define the filename where to save content
+* **source** is an ID, PATH or URL to fetch content
 
 **Important:** This command ever writes data to `package.json` file to update `snipacks` section.
 

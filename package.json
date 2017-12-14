@@ -37,12 +37,14 @@
 		},
 		"gist": {
 			"asq.js": "jyamashiro24/17ac171a73246744b09a47d6c9d77241",
+			"cnpj.js": "alexbruno/6623b5afa847f891de9cb6f704d86d02",
 			"kav.js": "steven89/f7aedca683deee6ee8211399e94cd583"
 		},
 		"gitlab": {
 			"dom.js": "34295",
 			"dstrbg.styl": "1662645",
-			"tplrender.js": "1663326"
+			"tplrender.js": "1663326",
+			"uuid.js": "1668473"
 		},
 		"unpkg": {
 			"moment.js": "moment/min/moment-with-locales.min.js",
