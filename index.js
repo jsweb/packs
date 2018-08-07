@@ -1,27 +1,12 @@
 #!/usr/bin/env node
-
-'use strict';
-
-const fs = require('fs'),
-  path = require('path'),
-  mkdirp = require('mkdirp'),
-  request = require('request'),
-  cfg = path.join(process.cwd(), 'package.json'),
-  env = process.env.NODE_ENV || 'dev';
-
+// GET request
 function get(url) {
   return new Promise(done => {
     request.get(url, (e, res, body) => (e ? fail(e) : done(body)));
   }).catch(e => console.error(e));
 }
 
-const proj = require(cfg),
-  snpks = proj.snipacks || {},
-  argv = process.argv.slice(1).filter(i => !/snipacks/.test(i)),
-  cmd = argv[0] || 'update',
-  args = argv.slice(1),
-  snipacks = {
-    dir: snpks.dir || 'snipacks',
+const snipacks = {
     update() {
       const all = () => this.getall(),
         dir = () => this.mkdir(all);
