@@ -1,6 +1,6 @@
 # @jsweb/packs
 
-A simple, fast and objective manager for packages, snippets and assets.
+A simple, fast and objective manager for packages, snippets, assets or anything with no dependencies.
 
 * CLI
 * Packages/Snippets/Assets manager
