@@ -1,3 +1,5 @@
+jsweb-packs
+
 # Logs
 logs
 *.log
@@ -35,7 +37,6 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
-snipacks/
 
 # Typescript v1 declaration files
 typings/
@@ -57,9 +58,3 @@ typings/
 
 # dotenv environment variables file
 .env
-
-# Custom
-package-lock.json
-mochawesome-report
-public
-.npmrc
