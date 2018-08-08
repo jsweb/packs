@@ -15,9 +15,8 @@
     "unpkg",
     "assets"
   ],
-  "main": "./bin/packs.js",
   "bin": {
-    "packs": "./bin/packs.js"
+    "packs": "bin/packs.js"
   },
   "dependencies": {
     "mkdirp": "^0.5.1",
