@@ -1,6 +1,6 @@
 {
   "name": "@jsweb/packs",
-  "version": "2.0.1",
+  "version": "2.0.0",
   "description": "A simple, fast and objective manager for packages, snippets, assets or anything with no dependencies.",
   "repository": "git@github.com:jsweb/packs.git",
   "author": "Alex Bruno Cáceres <git.alexbr@outlook.com>",
