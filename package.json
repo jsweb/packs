@@ -22,13 +22,13 @@
   },
   "dependencies": {
     "mkdirp": "^0.5.1",
-    "request": "^2.87.0"
+    "request": "^2.87.0",
+    "ts-promise": "^2.0.0"
   },
   "devDependencies": {
     "@types/mkdirp": "^0.5.2",
     "@types/node": "^10.5.6",
     "@types/request": "^2.47.1",
-    "ts-promise": "^2.0.0",
     "tslint": "^5.11.0",
     "typescript": "^3.0.1"
   },
