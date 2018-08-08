@@ -1,8 +1,8 @@
 {
-  "name": "snipacks",
+  "name": "@jsweb/packs",
   "version": "1.3.8",
-  "description": "A super simple, fast and objective manager for packages, snippets and assets",
-  "repository": "git@github.com:jsweb/snipacks.git",
+  "description": "A simple, fast and objective manager for packages, snippets and assets",
+  "repository": "git@github.com:jsweb/packs.git",
   "author": "Alex Bruno Cáceres <git.alexbr@outlook.com>",
   "license": "MIT",
   "tags": [
@@ -12,11 +12,13 @@
     "npm",
     "package",
     "snippets",
-    "unpkg"
+    "unpkg",
+    "assets"
   ],
   "main": "dist/index.js",
   "bin": {
-    "snipacks": "dist/index.js"
+    "@jsweb/packs": "dist/index.js",
+    "packs": "dist/index.js"
   },
   "dependencies": {
     "mkdirp": "^0.5.1",
@@ -36,13 +38,5 @@
     "fix": "npm run lint -- --fix",
     "lint": "tslint -p . -c tslint.json",
     "build": "npm run check && npm run lint && tsc"
-  },
-  "snipacks": {
-    "dir": "snipacks",
-    "unpkg": {
-      "moment.js": "moment",
-      "queryfetch.js": "queryfetch",
-      "vue.js": "vue"
-    }
   }
 }

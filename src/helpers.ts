@@ -1,4 +1,4 @@
-import { createWriteStream, stat } from 'fs';
+import { createWriteStream, stat, unlink, writeFile } from 'fs';
 import mkdirp from 'mkdirp';
 import { join } from 'path';
 import request from 'request';
@@ -54,7 +54,7 @@ export function fetch(
   dir: string,
   type: string,
   assets: { [key: string]: string },
-) {
+): void {
   Object.keys(assets).forEach((file) => {
     const web = type === 'web';
     const raw = /^gis?t/.test(type);
@@ -64,4 +64,56 @@ export function fetch(
 
     getfile(url, dir, type, file);
   });
+}
+
+export function get(url: string) {
+  return new Promise((done, fail) => {
+    request.get(url, (e, res, body) => e ? fail(e) : done(body));
+  }).catch((e) => console.error(e));
+}
+
+export function bundle(
+  dir: string,
+  type: string,
+  assets: { [key: string]: string[] },
+): void {
+  const path = join(dir, type);
+  const req = () =>
+    Object.keys(assets).forEach((out) => {
+      const file = join(dir, type, out);
+      const lock = file.replace(process.cwd(), '');
+
+      Promise
+        .all(assets[out].map(get))
+        .then((codes) => {
+          const code = codes.join('\n').replace(/\/\/#.+\.map\s/g, '');
+          writeFile(file, code, () => {
+            console.log(lock, 'saved');
+          });
+        });
+    });
+
+  stat(path, (e) => e ? mkdirp(path, req) : req());
+}
+
+export function exists(
+  path: string,
+  type: string,
+  file: string,
+): Promise<any> {
+  const target = join(path, type, file);
+  const lock = target.replace(process.cwd(), '');
+  return new Promise((done) => {
+    stat(target, (error) => {
+      return error ? done({ error, target, lock }) : done({ target, lock });
+    });
+  });
+}
+
+export function delfile(
+  target: string,
+  done: any,
+  lock: string,
+): void {
+  unlink(target, () => done(lock));
 }

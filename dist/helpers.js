@@ -53,3 +53,40 @@ function fetch(dir, type, assets) {
     });
 }
 exports.fetch = fetch;
+function get(url) {
+    return new ts_promise_1.default((done, fail) => {
+        request_1.default.get(url, (e, res, body) => e ? fail(e) : done(body));
+    }).catch((e) => console.error(e));
+}
+exports.get = get;
+function bundle(dir, type, assets) {
+    const path = path_1.join(dir, type);
+    const req = () => Object.keys(assets).forEach((out) => {
+        const file = path_1.join(dir, type, out);
+        const lock = file.replace(process.cwd(), '');
+        ts_promise_1.default
+            .all(assets[out].map(get))
+            .then((codes) => {
+            const code = codes.join('\n').replace(/\/\/#.+\.map\s/g, '');
+            fs_1.writeFile(file, code, () => {
+                console.log(lock, 'saved');
+            });
+        });
+    });
+    fs_1.stat(path, (e) => e ? mkdirp_1.default(path, req) : req());
+}
+exports.bundle = bundle;
+function exists(path, type, file) {
+    const target = path_1.join(path, type, file);
+    const lock = target.replace(process.cwd(), '');
+    return new ts_promise_1.default((done) => {
+        fs_1.stat(target, (error) => {
+            return error ? done({ error, target, lock }) : done({ target, lock });
+        });
+    });
+}
+exports.exists = exists;
+function delfile(target, done, lock) {
+    fs_1.unlink(target, () => done(lock));
+}
+exports.delfile = delfile;

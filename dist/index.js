@@ -7,7 +7,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = require("path");
 const class_1 = __importDefault(require("./class"));
 const json = path_1.join(process.cwd(), 'package.json');
-// tslint:disable-next-line:no-var-requires
 const pkg = require(json);
 const env = process.env.NODE_ENV || 'dev';
 const args = process.argv.slice(1).filter((i) => !/snipacks/.test(i));

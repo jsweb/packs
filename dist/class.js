@@ -4,17 +4,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = require("fs");
-const path_1 = require("path");
 const ts_promise_1 = __importDefault(require("ts-promise"));
 const helpers_1 = require("./helpers");
-const helpers_2 = require("./helpers");
-class Snipacks {
+class JSWebPacks {
+    get pack() {
+        return /dev/i.test(this.env) ? this.packup : ts_promise_1.default.resolve;
+    }
     constructor(env, json, pkg) {
         this.env = env;
         this.json = json;
         this.pkg = pkg;
-        this.pkg.snipacks = this.pkg.snipacks || {};
-        this.pkg.snipacks.dir = this.pkg.snipacks.dir || 'snipacks';
+        this.pkg['@jsweb/packs'] = this.pkg['@jsweb/packs'] || {};
+        this.pkg['@jsweb/packs'].dir = this.pkg['@jsweb/packs'].dir || 'jsweb-packs';
     }
     exec(cmd, args) {
         try {
@@ -25,65 +26,79 @@ class Snipacks {
         }
     }
     list() {
-        console.log(JSON.stringify(this.pkg.snipacks, null, '  '));
+        console.log(JSON.stringify(this.pkg['@jsweb/packs'], null, '  '));
     }
     add(cmd, args) {
         const [type, file, source] = args;
         const ok = helpers_1.command(cmd, type, file, source);
         if (ok) {
-            const { snipacks } = this.pkg;
+            const packs = this.pkg['@jsweb/packs'];
             const asset = {
                 [file]: source,
             };
-            snipacks[type] = snipacks[type] || {};
-            snipacks[type] = { ...snipacks[type], ...asset };
-            this.pkg.snipacks = snipacks;
-            helpers_1.checkdir(snipacks.dir)
-                .then((path) => helpers_2.fetch(path, type, asset))
-                .then(this.packup.bind(this));
+            packs[type] = packs[type] || {};
+            packs[type] = { ...packs[type], ...asset };
+            this.pkg['@jsweb/packs'] = packs;
+            helpers_1.checkdir(packs.dir)
+                .then((path) => helpers_1.fetch(path, type, asset))
+                .then(this.pack.bind(this));
         }
     }
     del(cmd, args) {
         const [type, file] = args;
         const ok = helpers_1.command(cmd, type, file);
         if (ok) {
-            const { snipacks } = this.pkg;
-            const path = path_1.join(snipacks.dir, type, file);
-            const delfile = (done) => fs_1.unlink(path, done);
-            const delkey = () => {
-                delete snipacks[type][file];
-                this.packup().then(() => console.log(path, 'deleted'));
+            const packs = this.pkg['@jsweb/packs'];
+            const delkey = (lock) => {
+                delete packs[type][file];
+                this.pkg['@jsweb/packs'] = packs;
+                this.pack().then(() => console.log(lock, 'deleted'));
             };
-            fs_1.stat(path, (e) => e ? delkey() : delfile(delkey));
+            helpers_1.checkdir(packs.dir)
+                .then((path) => helpers_1.exists(path, type, file))
+                .then((resp) => {
+                if (resp.error) {
+                    delkey(resp.lock);
+                }
+                else {
+                    helpers_1.delfile(resp.target, delkey, resp.lock);
+                }
+            });
         }
     }
     update() {
-        const base = this.pkg.snipacks.dir;
-        const dirs = Object.keys(this.pkg.snipacks).filter((k) => k !== 'dir');
-        const play = /dev/i.test(this.env) ? this.packup() : ts_promise_1.default.resolve();
+        const packs = this.pkg['@jsweb/packs'];
+        const dirs = Object.keys(packs).filter((k) => k !== 'dir');
         console.log('Async fetching snippets/packages...');
-        play.then(() => helpers_1.checkdir(base))
+        helpers_1.checkdir(packs.dir)
             .then((path) => {
             dirs.forEach((dir) => {
-                helpers_2.fetch(path, dir, this.pkg.snipacks[dir]);
+                if (dir === 'bundle') {
+                    helpers_1.bundle(path, dir, packs[dir]);
+                }
+                else {
+                    helpers_1.fetch(path, dir, packs[dir]);
+                }
             });
-        });
+        })
+            .then(this.pack.bind(this));
     }
     packup() {
-        const { snipacks } = this.pkg;
-        const result = Object.keys(snipacks)
+        const packs = this.pkg['@jsweb/packs'];
+        const { dir } = packs;
+        const result = Object.keys(packs)
             .filter((k) => k !== 'dir')
             .sort()
             .reduce((o, i) => {
-            o[i] = Object.keys(snipacks[i])
+            o[i] = Object.keys(packs[i])
                 .sort()
                 .reduce((r, s) => {
-                r[s] = snipacks[i][s];
+                r[s] = packs[i][s];
                 return r;
             }, {});
             return o;
         }, {});
-        this.pkg.snipacks = { ...snipacks, ...result };
+        this.pkg['@jsweb/packs'] = { dir, ...result };
         const json = JSON.stringify(this.pkg, null, '  ');
         return new ts_promise_1.default((done) => {
             fs_1.writeFile(this.json, json, (e) => {
@@ -97,4 +112,4 @@ class Snipacks {
         });
     }
 }
-exports.default = Snipacks;
+exports.default = JSWebPacks;
