@@ -29,7 +29,7 @@ Then, include a new command in `package.json` into `scripts` section:
 ```json
 {
   "scripts": {
-    "packs": "@jsweb/packs"
+    "packs": "@jsweb/packs" // or just "packs"
   }
 }
 ```
@@ -42,13 +42,13 @@ If you prefer, install it globaly:
 npm i -g @jsweb/packs
 ```
 
+Then you can run CLI `@jsweb/packs` or just `packs` anywhere.
+
 Or, use with NPX:
 
 ```
 npx @jsweb/packs
 ```
-
-Then you can run CLI `@jsweb/packs` anywhere.
 
 ## Usage
 
@@ -99,7 +99,7 @@ Then, just run `snipacks` CLI command!
 
 ```
 ./
-| -${@jsweb/packs dir}
+| -${packs dir}
   | - bundle
   | - gist
   | - gitlab
@@ -201,16 +201,16 @@ Update/fetch all of your assets with this simple command: `@jsweb/packs update` 
 
 You can add new assets to your project by manually adding `@jsweb/packs` section at `package.json` and runing `update` command.
 
-But `@jsweb/packs add [type] [dest] [source]` command is a convenient way:
+But `packs add [type] [dest] [source]` command is a convenient way:
 
 ```
-@jsweb/packs add unpkg moment.js moment/min/moment-with-locales.min.js
+packs add unpkg moment.js moment/min/moment-with-locales.min.js
 
-@jsweb/packs add gist kav.js steven89/f7aedca683deee6ee8211399e94cd583
+packs add gist kav.js steven89/f7aedca683deee6ee8211399e94cd583
 
-@jsweb/packs add gitlab dom.js 34295
+packs add gitlab dom.js 34295
 
-@jsweb/packs add web animate.css https://raw.githubusercontent.com/daneden/animate.css/master/animate.min.css
+packs add web animate.css https://raw.githubusercontent.com/daneden/animate.css/master/animate.min.css
 ```
 
 Arguments must follow this pattern:
@@ -225,10 +225,10 @@ Arguments must follow this pattern:
 
 To remove assets you can just delete files from directory and remove entry from `@jsweb/packs` section at `package.json`.
 
-But you can simply run `@jsweb/packs del [type] [file]`:
+But you can simply run `packs del [type] [file]`:
 
 ```
-@jsweb/packs del web jquery.js
+packs del web jquery.js
 ```
 
 **Important:** This command ever writes data to `package.json` file to update `@jsweb/packs` section.
@@ -238,5 +238,5 @@ But you can simply run `@jsweb/packs del [type] [file]`:
 Prints `@jsweb/packs` section from `package.json`. Just for convenience!
 
 ```
-@jsweb/packs list
+packs list
 ```

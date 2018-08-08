@@ -16,6 +16,7 @@
     "assets"
   ],
   "bin": {
+    "@jsweb/packs": "bin/packs.js",
     "packs": "bin/packs.js"
   },
   "dependencies": {
