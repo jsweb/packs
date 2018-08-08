@@ -9,7 +9,7 @@ const class_1 = __importDefault(require("./class"));
 const json = path_1.join(process.cwd(), 'package.json');
 const pkg = require(json);
 const env = process.env.NODE_ENV || 'dev';
-const args = process.argv.slice(1).filter((i) => !/snipacks/.test(i));
+const args = process.argv.slice(1).filter((i) => !/packs/.test(i));
 const cmd = args.shift() || 'update';
 const cli = new class_1.default(env, json, pkg);
 cli.exec(cmd, args);
