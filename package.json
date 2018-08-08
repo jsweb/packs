@@ -17,7 +17,6 @@
   ],
   "main": "dist/index.js",
   "bin": {
-    "@jsweb/packs": "dist/index.js",
     "packs": "dist/index.js"
   },
   "dependencies": {
