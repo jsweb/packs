@@ -15,9 +15,8 @@
     "unpkg",
     "assets"
   ],
-  "main": "dist/index.js",
   "bin": {
-    "packs": "dist/index.js"
+    "packs": "./bin/index.js"
   },
   "dependencies": {
     "mkdirp": "^0.5.1",
