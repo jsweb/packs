@@ -44,12 +44,15 @@ function getfile(url, dir, sub, out) {
 }
 exports.getfile = getfile;
 function fetch(dir, type, assets) {
-    Object.keys(assets).forEach((file) => {
+    Object.keys(assets).forEach((path) => {
         const web = type === 'web';
         const raw = /^gis?t/.test(type);
-        const src = web ? assets[file] : `${base[type]}/${assets[file]}`;
+        const src = web ? assets[path] : `${base[type]}/${assets[path]}`;
         const url = raw ? `${src}/raw` : src;
-        getfile(url, dir, type, file);
+        const part = path.split('/');
+        const file = part.pop() || 'error';
+        const sub = [type].concat(part).join('/');
+        getfile(url, dir, sub, file);
     });
 }
 exports.fetch = fetch;
@@ -60,19 +63,23 @@ function get(url) {
 }
 exports.get = get;
 function bundle(dir, type, assets) {
-    const path = path_1.join(dir, type);
     const req = () => Object.keys(assets).forEach((out) => {
-        const file = path_1.join(dir, type, out);
+        const part = out.split('/');
+        const name = part.pop() || 'error';
+        const sub = path_1.join(dir, type, ...part);
+        const file = path_1.join(sub, name);
         const lock = file.replace(process.cwd(), '');
         ts_promise_1.default
             .all(assets[out].map(get))
             .then((codes) => {
             const code = codes.join('\n').replace(/\/\/#.+\.map\s/g, '');
-            fs_1.writeFile(file, code, () => {
+            const save = () => fs_1.writeFile(file, code, () => {
                 console.log(lock, 'saved');
             });
+            fs_1.stat(sub, (e) => e ? mkdirp_1.default(sub, save) : save());
         });
     });
+    const path = path_1.join(dir, type);
     fs_1.stat(path, (e) => e ? mkdirp_1.default(path, req) : req());
 }
 exports.bundle = bundle;

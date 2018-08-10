@@ -44,7 +44,7 @@ npm i -g @jsweb/packs
 
 Then you can run CLI `@jsweb/packs` or just `packs` anywhere.
 
-Or, use with NPX:
+Or, use with NPX without install:
 
 ```
 npx @jsweb/packs
@@ -53,6 +53,8 @@ npx @jsweb/packs
 ## Usage
 
 **@jsweb/packs** reads a section at your `package.json` file that registers packages, snippets, gists or anything you want to fetch from web into your project.
+
+**New in v2.0.8**: Now you can save your assets in sub directories.
 
 Create a `@jsweb/packs` section like this:
 
@@ -69,21 +71,21 @@ Create a `@jsweb/packs` section like this:
     },
     "gist": {
       "asq.js": "jyamashiro24/17ac171a73246744b09a47d6c9d77241",
-      "kav.js": "steven89/f7aedca683deee6ee8211399e94cd583"
+      "steven89/kav.js": "steven89/f7aedca683deee6ee8211399e94cd583"
     },
     "gitlab": {
       "dom.js": "34295",
       "dstrbg.styl": "1662645",
-      "tplrender.js": "1663326"
+      "tpl/render.js": "1663326"
     },
     "unpkg": {
       "moment.js": "moment/min/moment-with-locales.min.js",
-      "truetype.js": "@jsweb/truetype",
+      "jsweb/truetype.js": "@jsweb/truetype",
       "normalize.css": "normalize.css"
     },
     "web": {
       "animate.css": "https://raw.githubusercontent.com/daneden/animate.css/master/animate.min.css",
-      "js-logo.svg": "https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg"
+      "img/js.svg": "https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg"
     }
   }
 }
@@ -157,8 +159,8 @@ Gist needs `user/hash` to identify and get the code. Gitlab Snippets just need a
 {
   "@jsweb/packs": {
     "web": {
-      "js-logo.svg": "https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg",
-      "npm-do-more.svg": "https://static.npmjs.com/images/saas-features/do-more-faster.svg"
+      "img/js.svg": "https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg",
+      "img/npm-do-more.svg": "https://static.npmjs.com/images/saas-features/do-more-faster.svg"
     }
   }
 }
@@ -206,7 +208,7 @@ But `packs add [type] [dest] [source]` command is a convenient way:
 ```
 packs add unpkg moment.js moment/min/moment-with-locales.min.js
 
-packs add gist kav.js steven89/f7aedca683deee6ee8211399e94cd583
+packs add gist steven89/kav.js steven89/f7aedca683deee6ee8211399e94cd583
 
 packs add gitlab dom.js 34295
 

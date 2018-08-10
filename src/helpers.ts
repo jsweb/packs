@@ -55,14 +55,18 @@ export function fetch(
   type: string,
   assets: { [key: string]: string },
 ): void {
-  Object.keys(assets).forEach((file) => {
+  Object.keys(assets).forEach((path) => {
     const web = type === 'web';
     const raw = /^gis?t/.test(type);
 
-    const src = web ? assets[file] : `${base[type]}/${assets[file]}`;
+    const src = web ? assets[path] : `${base[type]}/${assets[path]}`;
     const url = raw ? `${src}/raw` : src;
 
-    getfile(url, dir, type, file);
+    const part = path.split('/');
+    const file = part.pop() || 'error';
+    const sub = [type].concat(part).join('/');
+
+    getfile(url, dir, sub, file);
   });
 }
 
@@ -77,22 +81,26 @@ export function bundle(
   type: string,
   assets: { [key: string]: string[] },
 ): void {
-  const path = join(dir, type);
   const req = () =>
     Object.keys(assets).forEach((out) => {
-      const file = join(dir, type, out);
+      const part = out.split('/');
+      const name = part.pop() || 'error';
+      const sub = join(dir, type, ...part);
+      const file = join(sub, name);
       const lock = file.replace(process.cwd(), '');
 
       Promise
         .all(assets[out].map(get))
         .then((codes) => {
           const code = codes.join('\n').replace(/\/\/#.+\.map\s/g, '');
-          writeFile(file, code, () => {
+          const save = () => writeFile(file, code, () => {
             console.log(lock, 'saved');
           });
+          stat(sub, (e) => e ? mkdirp(sub, save) : save());
         });
     });
 
+  const path = join(dir, type);
   stat(path, (e) => e ? mkdirp(path, req) : req());
 }
 
