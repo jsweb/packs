@@ -16,20 +16,19 @@
     "assets"
   ],
   "bin": {
-    "@jsweb/packs": "bin/packs.js",
     "packs": "bin/packs.js"
   },
   "dependencies": {
     "mkdirp": "^0.5.1",
-    "request": "^2.87.0",
-    "ts-promise": "^2.0.0"
+    "request": "^2.88.0",
+    "ts-promise": "^2.2.0"
   },
   "devDependencies": {
     "@types/mkdirp": "^0.5.2",
-    "@types/node": "^10.5.6",
-    "@types/request": "^2.47.1",
-    "tslint": "^5.11.0",
-    "typescript": "^3.0.1"
+    "@types/node": "^12.7.2",
+    "@types/request": "^2.48.2",
+    "tslint": "^5.19.0",
+    "typescript": "^3.5.3"
   },
   "scripts": {
     "watch": "tsc -w",
