@@ -1,11 +1,21 @@
 {
   "name": "@jsweb/packs",
   "version": "2.0.9",
-  "description": "A simple, fast and objective manager for packages, snippets, assets or anything with no dependencies.",
-  "repository": "git@github.com:jsweb/packs.git",
-  "author": "Alex Bruno Cáceres <git.alexbr@outlook.com>",
-  "license": "MIT",
-  "tags": [
+  "description": "A simple, fast and objective manager for modules, snippets, assets or anything with no dependencies.",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "major": "npm version major && npm run push",
+    "minor": "npm version minor && npm run push",
+    "patch": "npm version patch && npm run push",
+    "push": "git push && git push --tags",
+    "lint": "prettier --config .prettierrc.json --write 'src/**/*.js'",
+    "dist": "run-s dist:*",
+    "dist:lint": "npm run lint",
+    "dist:clean": "npm run clean",
+    "dist:build": "babel src -d dist",
+    "test": "npm run dist"
+  },
+  "keywords": [
     "cli",
     "gist",
     "manager",
@@ -15,26 +25,32 @@
     "unpkg",
     "assets"
   ],
-  "bin": {
-    "packs": "bin/packs.js"
+  "license": "MIT",
+  "author": "Alex Bruno Cáceres <git.alexbr@outlook.com>",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jsweb/packs.git"
   },
   "dependencies": {
-    "mkdirp": "^0.5.1",
-    "request": "^2.88.0",
-    "ts-promise": "^2.2.0"
+    "commander": "^6.0.0",
+    "mkdirp": "^1.0.4",
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
-    "@types/mkdirp": "^0.5.2",
-    "@types/node": "^12.7.2",
-    "@types/request": "^2.48.2",
-    "tslint": "^5.19.0",
-    "typescript": "^3.5.3"
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.4",
+    "@babel/preset-env": "^7.11.0",
+    "husky": "^4.2.5",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.1.0"
   },
-  "scripts": {
-    "watch": "tsc -w",
-    "check": "tsc --noEmit",
-    "fix": "npm run lint -- --fix",
-    "lint": "tslint -p . -c tslint.json",
-    "build": "npm run check && npm run lint && tsc"
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && git add ."
+    }
+  },
+  "main": "dist/main.js",
+  "bin": {
+    "packs": "dist/main.js"
   }
 }

@@ -1,16 +1,16 @@
 # @jsweb/packs
 
-A simple, fast and objective manager for packages, snippets, assets or anything with no dependencies.
+A simple, fast and objective manager for modules, snippets, assets or anything with no dependencies.
 
-* CLI
-* Packages/Snippets/Assets manager
-* Simple, fast, objective
-* Get only files you want from NPM packages
-* Fetch Gist and Gitlab snippets to save as code
-* Grab anything from the web
-* All automated with a simple JSON setup
+- CLI
+- Modules/Snippets/Assets manager
+- Simple, fast, objective
+- Get only files you want from NPM packages
+- Fetch Gist and Gitlab snippets to save as code
+- Grab anything from the web
+- All automated with a simple JSON setup
 
-***
+---
 
 - [@jsweb/packs](#jswebpacks)
   - [Install](#install)
@@ -28,7 +28,7 @@ A simple, fast and objective manager for packages, snippets, assets or anything 
     - [Web / Anything](#web--anything)
     - [Bundle](#bundle)
 
-***
+---
 
 ## Install
 
