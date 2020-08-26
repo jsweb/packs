@@ -46,6 +46,9 @@ export async function add(cmd, args) {
 export async function update() {
   const index = collection()
 
+  if (!index.length)
+    return console.log('\n', '⚠ No files to fetch! Try add some stuff.', '\n')
+
   index.forEach((type) => {
     Object.keys(packs[type]).forEach(async (dest) => {
       const source = packs[type][dest]
