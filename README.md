@@ -93,7 +93,7 @@ Create a `@jsweb/packs` section like this:
 }
 ```
 
-Then, just run `packs` CLI command!
+Then, just run `packs update` CLI command!
 
 **key : value** pairs within sections represent **destination : source**, so **key** is the filename where the asset will be saved and **value** is the source to fetch its content.
 
@@ -130,9 +130,9 @@ Just define `dir` on setup at `package.json`:
 
 **@jsweb/packs** CLI support some simple commands. If none is given, `update` is default.
 
-### update (default)
+### update
 
-Update/fetch all of your assets with this simple command: `packs update` or just `packs`.
+Update/fetch all of your assets with this simple command: `packs update`.
 
 **Important:** By default, this command rewrites `@jsweb/packs` section at `package.json` file to sort content. If you need to prevent this behavior for CI/CD or any other production workflow, make sure to set `NODE_ENV` with any value that not contains `dev` (case not sensitive).
 
