@@ -1,17 +1,21 @@
 import { join } from 'path'
-import { writeFileSync, unlinkSync } from 'fs'
+import { writeFileSync, unlinkSync, readFileSync } from 'fs'
 
 import mkdirp from 'mkdirp'
 import fetch from 'node-fetch'
 
-import pkgjson from '../package.json'
-
+// Env
 const root = process.cwd()
 const env = process.env.NODE_ENV || 'dev'
 const dev = /dev/i.test(env)
 
-const packs = pkgjson['@jsweb/packs'] || {}
+// Package
+const pkg = join(root, 'package.json')
+const json = readFileSync(pkg, 'utf8')
+const pkgjson = JSON.parse(json)
 
+// @jsweb/packs
+const packs = pkgjson['@jsweb/packs'] || {}
 const types = {
   gist: 'https://gist.githubusercontent.com',
   gitlab: 'https://gitlab.com/-/snippets',
