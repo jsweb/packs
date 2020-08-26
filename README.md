@@ -26,7 +26,6 @@ A simple, fast and objective manager for modules, snippets, assets or anything w
     - [NPM / Unpkg](#npm--unpkg)
     - [Gist and Gitlab Snippets](#gist-and-gitlab-snippets)
     - [Web / Anything](#web--anything)
-    - [Bundle](#bundle)
 
 ---
 
@@ -72,13 +71,6 @@ Create a `@jsweb/packs` section like this:
 {
   "@jsweb/packs": {
     "dir": "jsweb-packs",
-    "bundle": {
-      "vue.lib.js": [
-        "https://unpkg.com/vue/dist/vue.min.js",
-        "https://unpkg.com/vuex/dist/vuex.min.js",
-        "https://unpkg.com/vue-router/dist/vue-router.min.js"
-      ]
-    },
     "gist": {
       "asq.js": "jyamashiro24/17ac171a73246744b09a47d6c9d77241",
       "steven89/kav.js": "steven89/f7aedca683deee6ee8211399e94cd583"
@@ -114,7 +106,6 @@ You can save your assets in sub directories by setting **key** as a path to save
 ```
 ./
 | -${packs dir}
-  | - bundle
   | - gist
   | - gitlab
   | - unpkg
@@ -227,29 +218,6 @@ Gist needs `user/hash` to identify and get the code. Gitlab Snippets just need a
     "web": {
       "img/js.svg": "https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg",
       "img/npm-do-more.svg": "https://static.npmjs.com/images/saas-features/do-more-faster.svg"
-    }
-  }
-}
-```
-
-### Bundle
-
-If you want to build a bundle of `.js` or `.css` files, it is easy with **@jsweb/packs**.
-
-Map an Array with URLs to save your assets to a file into `bundle` section.
-
-All fetched content will be concatenated in the same order and saved to the file.
-
-```json
-{
-  "@jsweb/packs": {
-    "bundle": {
-      "lib.js": [
-        "https://unpkg.com/core-js/client/core.min.js",
-        "https://unpkg.com/vue/dist/vue.min.js",
-        "https://unpkg.com/vuex/dist/vuex.min.js",
-        "https://unpkg.com/vue-router/dist/vue-router.min.js"
-      ]
     }
   }
 }
