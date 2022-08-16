@@ -1,8 +1,5 @@
-src
-.prettierrc.json
-.babelrc
-.travis.yml
 jsweb-packs
+.prettierrc.json
 
 # Logs
 logs

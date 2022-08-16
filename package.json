@@ -2,18 +2,19 @@
   "name": "@jsweb/packs",
   "version": "2.1.2",
   "description": "A simple, fast and objective manager for modules, snippets, assets or anything with no dependencies.",
+  "type": "module",
+  "main": "main.js",
+  "bin": {
+    "packs": "main.js"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "scripts": {
-    "clean": "rm -rf dist",
-    "major": "npm version major && npm run push",
-    "minor": "npm version minor && npm run push",
-    "patch": "npm version patch && npm run push",
-    "push": "git push && git push --tags",
-    "lint": "prettier --config .prettierrc.json --write 'src/**/*.js'",
-    "dist": "run-s dist:*",
-    "dist:lint": "npm run lint",
-    "dist:clean": "npm run clean",
-    "dist:build": "babel src -d dist",
-    "test": "npm run dist"
+    "test": "ls -lh *.js",
+    "lint": "prettier --write *.js",
+    "preversion": "npm t",
+    "postversion": "git push && git push --tags"
   },
   "keywords": [
     "cli",
@@ -26,31 +27,17 @@
     "assets"
   ],
   "license": "MIT",
-  "author": "Alex Bruno Cáceres <git.alexbr@outlook.com>",
+  "author": "Alex Bruno Cáceres <contato@alexbruno.dev>",
   "repository": {
     "type": "git",
     "url": "git@github.com:jsweb/packs.git"
   },
   "dependencies": {
-    "commander": "^6.0.0",
-    "mkdirp": "^1.0.4",
-    "node-fetch": "^2.6.0"
+    "commander": "latest",
+    "mkdirp": "latest",
+    "node-fetch": "latest"
   },
   "devDependencies": {
-    "@babel/cli": "^7.10.5",
-    "@babel/core": "^7.11.4",
-    "@babel/preset-env": "^7.11.0",
-    "husky": "^4.2.5",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^2.1.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint && git add ."
-    }
-  },
-  "main": "dist/main.js",
-  "bin": {
-    "packs": "dist/main.js"
+    "prettier": "latest"
   }
 }

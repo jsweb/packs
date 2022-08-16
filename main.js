@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import commander from 'commander'
-import pack from '../package.json'
+import pack from './package.json' assert { type: 'json' }
 import { list, add, update, del } from './methods'
 
 commander.version(pack.version).description(pack.description)
