@@ -2,7 +2,7 @@
 
 A simple, fast and objective manager for modules, snippets, assets or anything with no dependencies.
 
-**Note:** Since version 3.0.0, @jsweb/packs requires Node.js v16.0.0 or higher and should break compatibility with older Node.js versions.
+**Note:** Since version 3.0.0, @jsweb/packs requires Node.js v16.0.0 or higher and should break compatibility with older Node.js versions. Some new features in Node.js are still experimental and may log warnings on the console.
 
 - CLI
 - Modules/Snippets/Assets manager
