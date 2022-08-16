@@ -8,7 +8,10 @@ yarn-debug.log*
 yarn-error.log*
 
 # Dependencies
-node_modules/
+node_modules
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
 
 # Optional npm cache directory
 .npm

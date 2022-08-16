@@ -2,6 +2,8 @@
 
 A simple, fast and objective manager for modules, snippets, assets or anything with no dependencies.
 
+**Note:** Since version 3.0.0, @jsweb/packs requires Node.js v16.0.0 or higher and should break compatibility with older Node.js versions.
+
 - CLI
 - Modules/Snippets/Assets manager
 - Simple, fast, objective
@@ -63,9 +65,9 @@ Or, use with NPX without install: `npx -p @jsweb/packs packs`.
 
 ## Usage
 
-**@jsweb/packs** reads a section at your `package.json` file that registers packages, snippets, gists or anything you want to fetch from web into your project.
+**@jsweb/packs** reads a section at your `package.json` file to register packages, snippets, gists or anything you want to fetch from web into your project.
 
-Create a `@jsweb/packs` section like this:
+Just create a `@jsweb/packs` section like this:
 
 ```json
 {
@@ -114,7 +116,7 @@ You can save your assets in sub directories by setting **key** as a path to save
 
 ## @jsweb/packs directory
 
-**@jsweb/packs** default dir is a `jsweb-packs` folder at `package.json` root directory, but it is possible to set a custom path to save your packs.
+**@jsweb/packs** default dir is a `jsweb-packs` folder at `package.json` root directory, but it is possible to set a custom path to save your assets.
 
 Just define `dir` on setup at `package.json`:
 
@@ -128,13 +130,13 @@ Just define `dir` on setup at `package.json`:
 
 ## CLI commands
 
-**@jsweb/packs** CLI support some simple commands. If none is given, `update` is default.
+**@jsweb/packs** CLI support some simple commands. If none is given, `help` is default.
 
 ### update
 
 Update/fetch all of your assets with this simple command: `packs update`.
 
-**Important:** By default, this command rewrites `@jsweb/packs` section at `package.json` file to sort content. If you need to prevent this behavior for CI/CD or any other production workflow, make sure to set `NODE_ENV` with any value that not contains `dev` (case not sensitive).
+**Important:** By default, this command rewrites `@jsweb/packs` section at `package.json` file to properly sort the content. If you need to prevent this behavior for CI/CD or any other production workflow, make sure to set `NODE_ENV` to any value which not contains `dev` (case not sensitive).
 
 ### add
 
@@ -142,7 +144,7 @@ You can add new assets to your project by manually adding `@jsweb/packs` section
 
 But `packs add [type] [dest] [source]` command is a convenient way:
 
-```
+```bash
 packs add unpkg moment.js moment/min/moment-with-locales.min.js
 
 packs add gist steven89/kav.js steven89/f7aedca683deee6ee8211399e94cd583
@@ -184,7 +186,7 @@ packs list
 
 ### NPM / Unpkg
 
-**@jsweb/packs** gets the code of NPM packages from Unpkg CDN. So, NPM packages must to be at `unpkg` section.
+**@jsweb/packs** gets the code of NPM packages from Unpkg CDN.
 
 Optionally, you can use SEMVER tags if you need to specify packages versions, like:
 
@@ -198,19 +200,19 @@ Optionally, you can use SEMVER tags if you need to specify packages versions, li
 }
 ```
 
-If no version was defined, latest version is default at Unpkg CDN.
+If no version was defined, the latest version is the default at Unpkg CDN.
 
 ### Gist and Gitlab Snippets
 
-For these codes/snippets repositories, **@jsweb/packs** simply fetch raw files as is.
+For code snippets repositories, **@jsweb/packs** simply fetch raw files as is.
 
 The codes must to be public available.
 
-Gist needs `user/hash` to identify and get the code. Gitlab Snippets just need an `id`.
+Gists need `user/hash` to identify and get the code. Gitlab Snippets just need an `id`.
 
 ### Web / Anything
 
-**@jsweb/packs** can fetch any public file online. Just map it into `web` section, like this:
+**@jsweb/packs** can fetch any online public file. Just map it into `web` section, like this:
 
 ```json
 {

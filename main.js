@@ -1,39 +1,45 @@
 #!/usr/bin/env node
 
-import commander from 'commander'
+import { program } from 'commander'
 import pack from './package.json' assert { type: 'json' }
-import { list, add, update, del } from './methods'
+import { list, add, update, del } from './methods.js'
 
-commander.version(pack.version).description(pack.description)
+program
+  .name('packs')
+  .version(pack.version)
+  .description(pack.description)
+  .usage('[command] [...args]')
 
-commander
+program
   .command('list')
   .description(
     'Prints `@jsweb/packs` section from `package.json`. Just for convenience!',
   )
   .action(list)
 
-commander
+program
   .command('add')
   .description(
     'Add new assets to your project, indexing at `@jsweb/packs` section in `package.json`',
   )
+  .arguments('<type> <dest> <source>')
   .action(add)
 
-commander
+program
   .command('update')
   .description(
-    'Update/fetch all assets indexed at `@jsweb/packs` section in `package.json`',
+    'Fetches all assets indexed at `@jsweb/packs` section in `package.json`',
   )
   .action(update)
 
-commander
+program
   .command('del')
   .description(
     'Remove assets indexed at `@jsweb/packs` section in `package.json`',
   )
+  .arguments('<type> <file>')
   .action(del)
 
-commander.parse(process.argv)
+program.parse()
 
-if (!commander.args.length) commander.help()
+if (!program.args.length) program.help()

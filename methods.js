@@ -28,10 +28,7 @@ export function list() {
   console.log(list)
 }
 
-export async function add(cmd, args) {
-  if (!valid(args, 3)) return false
-
-  const [type, dest, source] = args
+export async function add(type, dest, source) {
   const lib = packup(type, dest, source)
 
   try {
@@ -47,7 +44,11 @@ export async function update() {
   const index = collection()
 
   if (!index.length)
-    return console.log('\n', '⚠ No files to fetch! Try add some stuff.', '\n')
+    return console.log(
+      '\n',
+      '⚠ No files to fetch! Try to add some stuff.',
+      '\n',
+    )
 
   index.forEach((type) => {
     Object.keys(packs[type]).forEach(async (dest) => {
@@ -62,11 +63,7 @@ export async function update() {
   })
 }
 
-export function del(cdm, args) {
-  if (!valid(args, 2)) return false
-
-  const [type, file] = args
-
+export function del(type, file) {
   if (!packs[type])
     return console.log('\n', '⚠ No files indexed at', type, '\n')
 
@@ -96,13 +93,6 @@ export function del(cdm, args) {
 }
 
 // Helpers ---------------------------------------------------------------------
-function valid(args = [], size = 1) {
-  const count = args.length
-  return (
-    (count && count === size) || console.log('⚠ Invalid number of arguments')
-  )
-}
-
 function packup(type = '', dest = '', source = '') {
   packs.dir = packs.dir || 'jsweb-packs'
   packs[type] = packs[type] || {}
@@ -135,7 +125,8 @@ async function download(dir = '', type = '', dest = '', source = '') {
   await mkdirp(check)
 
   const get = await fetch(url)
-  const buffer = await get.buffer()
+  const data = await get.arrayBuffer()
+  const buffer = Buffer.from(data)
 
   writeFileSync(file, buffer)
 }
@@ -158,7 +149,7 @@ function rewrite(data = {}) {
   pkgjson['@jsweb/packs'] = data
 
   const path = join(root, 'package.json')
-  const json = JSON.stringify(pkgjson, null, 2)
+  const json = JSON.stringify(pkgjson, null, 2).concat('\n')
 
   writeFileSync(path, json)
 }
